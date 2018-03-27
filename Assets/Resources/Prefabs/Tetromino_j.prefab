@@ -51,8 +51,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4908717450448980}
+  - component: {fileID: 114373315244907340}
   m_Layer: 0
-  m_Name: Tetromino_j
+  m_Name: Tetromino_J
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +150,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1598367220248394}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8253825, y: -2.41244, z: 0}
+  m_LocalPosition: {x: -7.706436, y: 17.744474, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4049365169530384}
@@ -159,6 +160,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114373315244907340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1598367220248394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ec301d839e225d4d9b9759d77334f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallSpeed: 1
+  allowRotation: 1
+  limitRotation: 0
 --- !u!212 &212538838814950132
 SpriteRenderer:
   m_ObjectHideFlags: 1
