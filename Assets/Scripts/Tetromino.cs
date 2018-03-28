@@ -43,6 +43,13 @@ public class Tetromino : MonoBehaviour
         {
             RotateTetrominoIfAllowed();
         }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            while (enabled == true)
+            {
+                MoveTetrominoIfAllowed(0, -1, 0);
+            }
+        }
 
         if (Time.time - fall >= fallSpeed)
         {
@@ -53,7 +60,7 @@ public class Tetromino : MonoBehaviour
 
     private void RotateTetrominoIfAllowed()
     {
-        if(!allowRotation)
+        if (!allowRotation)
         {
             return;
         }
@@ -62,7 +69,11 @@ public class Tetromino : MonoBehaviour
         {
             transform.Rotate(0, 0, -90);
 
-            if (!CheckIsValidPosition())
+            if (CheckIsValidPosition())
+            {
+                FindObjectOfType<Game>().UpdateGrid(this);
+            }
+            else
             {
                 transform.Rotate(0, 0, 90);
             }
@@ -74,7 +85,11 @@ public class Tetromino : MonoBehaviour
         {
             transform.Rotate(0, 0, -currentRotationZ);
 
-            if(!CheckIsValidPosition())
+            if (CheckIsValidPosition())
+            {
+                FindObjectOfType<Game>().UpdateGrid(this);
+            }
+            else
             {
                 transform.Rotate(0, 0, currentRotationZ);
             }
@@ -83,7 +98,11 @@ public class Tetromino : MonoBehaviour
         {
             transform.Rotate(0, 0, 90);
 
-            if (!CheckIsValidPosition())
+            if (CheckIsValidPosition())
+            {
+                FindObjectOfType<Game>().UpdateGrid(this);
+            }
+            else
             {
                 transform.Rotate(0, 0, -90);
             }
@@ -94,13 +113,19 @@ public class Tetromino : MonoBehaviour
     {
         transform.position += new Vector3(x, y, z);
 
-        if (!CheckIsValidPosition())
+        if (CheckIsValidPosition())
+        {
+            FindObjectOfType<Game>().UpdateGrid(this);
+        }
+        else
         {
             transform.position += new Vector3(-x, -y, -z);
 
-            // if we try to move down that piece, we disable it + spawn new tetromino
-            if (x == 0 && z == 0 && y < 0)
+            // if we are trying to move that piece down but can't, it means that we must disable it and spawn another tetromino
+            if (y < 0)
             {
+                FindObjectOfType<Game>().DeleteRow();
+
                 enabled = false;
                 if (!FindObjectsOfType<Tetromino>().Any(e => e.enabled))
                 {
@@ -108,17 +133,20 @@ public class Tetromino : MonoBehaviour
                 }
             }
         }
-
-
     }
 
     bool CheckIsValidPosition()
     {
         var gameScript = FindObjectOfType<Game>();
-        foreach (Transform tetromino in transform)
+        foreach (Transform mino in transform)
         {
-            Vector2 roundedPosition = gameScript.Round(tetromino.position);
+            Vector2 roundedPosition = gameScript.Round(mino.position);
             if (gameScript.CheckIsInsideGrid(roundedPosition) == false)
+            {
+                return false;
+            }
+
+            if (FindObjectOfType<Game>().GetTransformAtGridPosition(roundedPosition) != null && FindObjectOfType<Game>().GetTransformAtGridPosition(roundedPosition).parent != transform)
             {
                 return false;
             }
