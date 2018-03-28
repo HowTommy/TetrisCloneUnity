@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tetromino : MonoBehaviour
@@ -101,7 +102,10 @@ public class Tetromino : MonoBehaviour
             if (x == 0 && z == 0 && y < 0)
             {
                 enabled = false;
-                FindObjectOfType<Game>().SpawnNextTetromino();
+                if (!FindObjectsOfType<Tetromino>().Any(e => e.enabled))
+                {
+                    FindObjectOfType<Game>().SpawnNextTetromino();
+                }
             }
         }
 
