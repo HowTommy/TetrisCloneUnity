@@ -8,7 +8,7 @@ public class Tetromino : MonoBehaviour
 {
     float fall = 0;
 
-    public float fallSpeed = 1;
+    public float fallSpeed = 2;
 
     public bool allowRotation = true;
     public bool limitRotation = false;
@@ -125,6 +125,11 @@ public class Tetromino : MonoBehaviour
             if (y < 0)
             {
                 FindObjectOfType<Game>().DeleteRow();
+
+                if(FindObjectOfType<Game>().CheckIsAboveGrid(this))
+                {
+                    FindObjectOfType<Game>().GameOver();
+                }
 
                 enabled = false;
                 if (!FindObjectsOfType<Tetromino>().Any(e => e.enabled))
