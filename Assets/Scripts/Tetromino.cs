@@ -8,7 +8,7 @@ public class Tetromino : MonoBehaviour
 {
     float fall = 0;
 
-    public float fallSpeed = 2;
+    public float fallSpeed = 1;
 
     public bool allowRotation = true;
     public bool limitRotation = false;
@@ -27,7 +27,8 @@ public class Tetromino : MonoBehaviour
 
     void CheckUserInput()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+		var swipeManager = SwipeManager.Instance;
+		if (Input.GetKeyDown(KeyCode.RightArrow) || swipeManager.IsSwiping(SwipeDirection.Right) || swipeManager.IsSwiping(SwipeDirection.RightUp) || swipeManager.IsSwiping(SwipeDirection.RightDown))
         {
             MoveTetrominoIfAllowed(1, 0, 0);
         }
