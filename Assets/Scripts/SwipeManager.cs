@@ -9,8 +9,9 @@ public enum SwipeDirection
     Right = 1 << 1,
     Up = 1 << 2,
     Down = 1 << 3,
+    Touch = 1 << 4,
 
-	LeftUp = 5,
+    LeftUp = 5,
     LeftDown = 9,
     RightUp = 6,
     RightDown = 10
@@ -23,8 +24,9 @@ public class SwipeManager : MonoBehaviour
 
     public SwipeDirection Direction { get; set; }
 
-	private Vector2 touchPosition;
-    private float swipeResistanceX = 50.0f;
+    private Vector3 touchPosition;
+    private Vector3 touchPosition2;
+    private float swipeResistanceX = 100.0f;
     private float swipeResistanceY = 100.0f;
 
     private void Start()
@@ -35,15 +37,32 @@ public class SwipeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        Direction = SwipeDirection.None;
+        bool moved = false;
+
+        if (Input.GetMouseButtonDown(0))
         {
-			touchPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            touchPosition = Input.mousePosition;
+        }
+        else if (Input.touches.Length > 0 && Input.touches[0].phase == TouchPhase.Began)
+        {
+            touchPosition = Input.touches[0].position;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-			Vector2 touchPosition2 = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-			Vector2 deltaSwipe = touchPosition - touchPosition2;
+            moved = true;
+            touchPosition2 = Input.mousePosition;
+        }
+        else if (Input.touches.Length > 0 && Input.touches[0].phase == TouchPhase.Ended)
+        {
+            moved = true;
+            touchPosition2 = Input.touches[0].position;
+        }
+
+        if (moved)
+        {
+            Vector2 deltaSwipe = touchPosition - touchPosition2;
 
             if (Mathf.Abs(deltaSwipe.x) > swipeResistanceX)
             {
@@ -56,16 +75,16 @@ public class SwipeManager : MonoBehaviour
                 // y axis
                 Direction |= deltaSwipe.y < 0 ? SwipeDirection.Up : SwipeDirection.Down;
             }
+
+            if (Direction == SwipeDirection.None)
+            {
+                Direction = SwipeDirection.Touch;
+            }
         }
     }
 
     public bool IsSwiping(SwipeDirection dir)
     {
-        var result = (Direction & dir) == dir;
-        if (result == true)
-        {
-            Direction = SwipeDirection.None;
-        }
-        return result;
+        return (Direction & dir) == dir;
     }
 }

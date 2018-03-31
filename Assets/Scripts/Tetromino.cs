@@ -28,19 +28,19 @@ public class Tetromino : MonoBehaviour
     void CheckUserInput()
     {
 		var swipeManager = SwipeManager.Instance;
-		if (Input.GetKeyDown(KeyCode.RightArrow) || swipeManager.IsSwiping(SwipeDirection.Right) || swipeManager.IsSwiping(SwipeDirection.RightUp) || swipeManager.IsSwiping(SwipeDirection.RightDown))
+		if (Input.GetKeyDown(KeyCode.RightArrow) || swipeManager.IsSwiping(SwipeDirection.Right))
         {
             MoveTetrominoIfAllowed(1, 0, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || swipeManager.IsSwiping(SwipeDirection.Left))
         {
             MoveTetrominoIfAllowed(-1, 0, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || swipeManager.IsSwiping(SwipeDirection.Down))
         {
             MoveTetrominoIfAllowed(0, -1, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || swipeManager.IsSwiping(SwipeDirection.Touch))
         {
             RotateTetrominoIfAllowed();
         }
