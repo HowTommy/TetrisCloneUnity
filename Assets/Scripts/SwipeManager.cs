@@ -26,7 +26,7 @@ public class SwipeManager : MonoBehaviour
 
     private Vector3 touchPosition;
     private Vector3 touchPosition2;
-    private float swipeResistanceX = 100.0f;
+    private float swipeResistanceX = 50.0f;
     private float swipeResistanceY = 100.0f;
 
     private void Start()
@@ -67,13 +67,13 @@ public class SwipeManager : MonoBehaviour
             if (Mathf.Abs(deltaSwipe.x) > swipeResistanceX)
             {
                 // x axis
-                Direction |= deltaSwipe.x < 0 ? SwipeDirection.Left : SwipeDirection.Right;
+                Direction |= deltaSwipe.x < 0 ? SwipeDirection.Right : SwipeDirection.Left;
             }
 
             if (Mathf.Abs(deltaSwipe.y) > swipeResistanceY)
             {
                 // y axis
-                Direction |= deltaSwipe.y < 0 ? SwipeDirection.Up : SwipeDirection.Down;
+                Direction |= deltaSwipe.y < 0 ? SwipeDirection.Down : SwipeDirection.Up;
             }
 
             if (Direction == SwipeDirection.None)
